@@ -2,21 +2,23 @@
   import { onMount, tick } from 'svelte'
   import loader from '@beyonk/async-script-loader'
 
-  export let subdomain = 'js'
-  export let hubId
-  export let doNotTrack = false
-  export let loadChatWidgetImmediately = true
+  const {
+    subdomain = 'js',
+    hubId,
+    doNotTrack = false,
+    loadChatWidgetImmediately = true
+  } = $props()
 
   const url = `//${subdomain}.hs-scripts.com/${hubId}.js`
   const globalName = '_hsp'
 
-  let isMounted = false
+  let isMounted = $state(false)
   let isChatWidgetLoaded = false
 
   function onConversationsApiReady () {
     const status = window.HubSpotConversations.widget.status()
 
-    isChatWidgetLoaded = status.loaded || (status.hasOwnProperty('pending') && !status.pending)
+    isChatWidgetLoaded = status.loaded || (Object.hasOwn(status, 'pending') && !status.pending)
   }
 
   const hsConversationsSettings = {
@@ -25,9 +27,11 @@
 
   const hsConversationsOnReady = [ onConversationsApiReady ]
 
-  $: if (isMounted) {
-    setDoNotTrackCookie(doNotTrack ? 'yes' : 'no')
-  }
+  $effect(() => {
+    if (isMounted) {
+      setDoNotTrackCookie(doNotTrack ? 'yes' : 'no')
+    }
+  })
 
   onMount(async () => {
     window._hsq = window._hsq || []
@@ -56,31 +60,30 @@
   function setDoNotTrackCookie (value) {
     const cookie = '__hs_do_not_track'
 
-    const expiry = new Date()
-    expiry.setMonth(expiry.getMonth() + 13)
+    const thirteenMonths = 60 * 60 * 24 * 395
 
-    document.cookie = `${cookie}=${value};Expires=${expiry.toUTCString()}`
+    document.cookie = `${cookie}=${value};Max-Age=${thirteenMonths}`
 
     trackPageView()
   }
 
   export function setIdentity (email, properties = {}) {
-    _hsq.push([ 'identify', { ...properties, email } ])
+    window._hsq.push([ 'identify', { ...properties, email } ])
 
     isLoaded() && trackPageView()
   }
 
   export function setPath (page) {
     const path = page.url ? page.url.pathname : page.path
-    const query = page.url ? page.url.searchparams : new URLSearchParams(page.query)
-    _hsq.push([ 'setPath', `${path}?${query}` ])
+    const query = page.url ? page.url.searchParams : new URLSearchParams(page.query)
+    window._hsq.push([ 'setPath', `${path}?${query}` ])
 
     refreshChatWidget()
     trackPageView()
   }
 
   function trackPageView () {
-    _hsq.push([ 'trackPageView' ])
+    window._hsq.push([ 'trackPageView' ])
   }
 
   export function loadChatWidget () {
