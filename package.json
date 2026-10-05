@@ -2,35 +2,57 @@
   "name": "@beyonk/svelte-hubspot",
   "version": "0.5.0",
   "scripts": {
-    "dev": "svelte-kit dev --port 2200",
-    "build": "svelte-kit build",
-    "package": "svelte-kit package",
-    "preview": "svelte-kit preview",
-    "lint": "eslint --ignore-path .gitignore ."
+    "dev": "vite dev --port 2200",
+    "build": "vite build",
+    "package": "svelte-package",
+    "preview": "vite preview",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@beyonk/async-script-loader": "^2.2.1"
-  },
-  "devDependencies": {
-    "@beyonk/eslint-config": "^7.0.2",
-    "@sveltejs/kit": "1.0.0-next.324",
-    "eslint": "^8.14.0",
-    "eslint-plugin-svelte3": "^3.4.1",
-    "svelte": "^3.48.0",
-    "svelte2tsx": "^0.5.9",
-    "typescript": "^4.6.4"
+    "@beyonk/async-script-loader": "^2.3.0"
   },
   "type": "module",
-  "packageManager": "pnpm@11.0.0",
+  "packageManager": "pnpm@12.9.1",
   "repository": "https://github.com/beyonk/svelte-hubspot.git",
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": "24.14.1",
-      "onFail": "error"
+      "version": "24",
+      "onFail": "download"
     }
   },
   "engines": {
-    "node": "24.14.1"
+    "node": "24"
+  },
+  "peerDependencies": {
+    "svelte": "^5.0.0"
+  },
+  "svelte": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@beyonk/eslint-config": "^10.1.1",
+    "@sveltejs/adapter-auto": "^8.0.0",
+    "@sveltejs/kit": "^3.0.0",
+    "@sveltejs/package": "^3.0.0",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "eslint": "^9.39.5",
+    "pkg-pr-new": "^0.0.88",
+    "svelte": "^5.57.1",
+    "svelte2tsx": "^0.7.61",
+    "typescript": "^6.0.3",
+    "vite": "^8.3.2"
+  },
+  "imports": {
+    "#lib": "./src/lib/index.js",
+    "#lib/*": "./src/lib/*"
   }
 }

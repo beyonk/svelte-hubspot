@@ -8,7 +8,7 @@
 
 ## Svelte HubSpot
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com) [![Svelte v3](https://img.shields.io/badge/svelte-v3-blueviolet.svg)](https://svelte.dev)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com) [![Svelte v5](https://img.shields.io/badge/svelte-v5-blueviolet.svg)](https://svelte.dev)
 
 Svelte HubSpot integration
 
@@ -21,7 +21,7 @@ npm i -D @beyonk/svelte-hubspot
 ## Usage
 
 ```svelte
-<!-- src/routes/__layout.svelte -->
+<!-- src/routes/+layout.svelte -->
 <HubSpotTracking hubId="123456" />
 
 <script>
